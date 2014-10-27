@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | I'm Xiaofei]]></title>
+  <link href="http://hongfei.me/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://hongfei.me/"/>
+  <updated>2014-10-27T16:09:09+08:00</updated>
+  <id>http://hongfei.me/</id>
+  <author>
+    <name><![CDATA[王小飞]]></name>
+    <email><![CDATA[immmfei@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FindSuperViewByChildView]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/findsuperviewbychildview/"/>
+    <updated>2014-10-27T15:11:44+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/findsuperviewbychildview</id>
+    <content type="html"><![CDATA[<p><code>报错：</code>当要通过子view获取父view时，</p>
+
+<p><code>
+fatherView *xx = childView.superView;
+-[UITableViewCellScrollView contentView]: unrecognized selector sent to instance
+</code></p>
+
+<p><code>原因：</code>在不同SDK （iOS6/7/8）下，不同控件的内部层级结构会有所变化，会取到错误的view。</p>
+
+<p><code>解决：</code>( UITableViewCell为例 )</p>
+
+<p>```
+&ndash;(UITableViewCell <em>)findSuperViewByChildView(UIView </em>)childView
+{</p>
+
+<pre><code> UIView *superView = [childView superview];
+ while (![superView isKindOfClass:[UITableViewCell class]]) {
+           superView = [superView superview];
+ }
+ UITableViewCell *cell = (UITableViewCell *)superView;
+ return cell;
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[获取所有cell]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/uitableviewcell/"/>
+    <updated>2014-10-27T15:09:52+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/uitableviewcell</id>
+    <content type="html"><![CDATA[<p><code>代理方法默认会复用移出屏幕外的cell</code></p>
+
+<p>&ndash;(UITableViewCell <em>)tableView:(UITableView </em>)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</p>
+
+<p><code>所以当使用下面方法获取cell的时候，屏幕外的cell == nil；</code></p>
+
+<p>// Tableview方法</p>
+
+<p>UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];</p>
+
+<p><code>要想获得屏幕以外的cell，需调用数据源方法</code></p>
+
+<p>// UITableViewDataSource 方法</p>
+
+<p>UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[删除 Provisioning Profile]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/provisioningprofile/"/>
+    <updated>2014-10-27T15:00:52+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/provisioningprofile</id>
+    <content type="html"><![CDATA[<p>手动删除
+<code>xcode5 provisioning profile path： ~/Library/MobileDevice/Provisioning Profiles</code>命令行：<code>cd ~/Library/MobileDevice/Provisioning\ Profiles/</code>根据时间排序<code>ls -ltr</code>会列出所有的 PP 文件，根据日期删除没用的即可。也可以删除所有，然后再重新安装需要的。删除 <code>rm *</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UILabel中显示不同的字体和颜色]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/uilabelfonecolor/"/>
+    <updated>2014-10-27T14:57:04+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/uilabelfonecolor</id>
+    <content type="html"><![CDATA[<p>在项目开发中，我们经常会遇到在这样一种情形：在一个UILabel 使用不同的颜色或不同的字体来体现字符串，在iOS 6 以后我们可以很轻松的实现这一点，官方的API 为我们提供了UILabel类的<code>attributedText</code>, 使用不同颜色和不同字体的字符串，我们可以使用<code>NSAttributedText</code>和 <code>NSMutableAttributedText</code> 类来实现。</p>
+
+<p>code：</p>
+
+<p><code>
+NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"Using NSAttributed String"];
+[str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0,5)];
+[str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(6,12)];
+[str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(19,6)];
+[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Arial-BoldItalicMT" size:30.0] range:NSMakeRange(0, 5)];
+[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:30.0] range:NSMakeRange(6, 12)];
+[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Courier-BoldOblique" size:30.0] range:NSMakeRange(19, 6)];
+attrLabel.attributedText = str;
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[导航控制器两种弹出方法]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa/"/>
+    <updated>2014-10-27T14:45:41+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa</id>
+    <content type="html"><![CDATA[<p> popToViewController用法:</p>
+
+<p>第一种：</p>
+
+<p>`[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:2]</p>
+
+<pre><code>  animated:YES];  `
+</code></pre>
+
+<p>第二种：</p>
+
+<p>`for (UIViewController *temp in self.navigationController.viewControllers) {</p>
+
+<pre><code>       if ([temp isKindOfClass:[你要跳转到的Controller class]]) {  
+          [self.navigationController popToViewController:temp animated:YES];  
+       }  
+</code></pre>
+
+<p>}`</p>
+]]></content>
+  </entry>
+  
+</feed>

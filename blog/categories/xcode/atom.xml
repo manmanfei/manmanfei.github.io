@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Xcode | I'm Xiaofei]]></title>
+  <link href="http://hongfei.me/blog/categories/xcode/atom.xml" rel="self"/>
+  <link href="http://hongfei.me/"/>
+  <updated>2014-10-27T16:09:09+08:00</updated>
+  <id>http://hongfei.me/</id>
+  <author>
+    <name><![CDATA[王小飞]]></name>
+    <email><![CDATA[immmfei@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode Plug-in]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/xcodeplugin/"/>
+    <updated>2014-10-27T14:49:26+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/xcodeplugin</id>
+    <content type="html"><![CDATA[<p><code>Xcode Plug</code></p>
+
+<table>
+<thead>
+<tr>
+<th>名称 </th>
+<th> 功能 </th>
+<th> 操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alcatrza </td>
+<td> 包管理工具 </td>
+<td> <code>command+shift+9</code></td>
+</tr>
+<tr>
+<td>BBUDebug…  </td>
+<td> 输入时隐藏DebugView </td>
+<td> auto</td>
+</tr>
+<tr>
+<td>BBUFull&hellip;  </td>
+<td> 多行显示issue </td>
+<td> </td>
+</tr>
+<tr>
+<td>KSImageNamed  </td>
+<td> imageWithName时显示图片 </td>
+<td> auto</td>
+</tr>
+<tr>
+<td>VVDocument    </td>
+<td> 标准化注释 </td>
+<td>  <code>///</code></td>
+</tr>
+<tr>
+<td>XAlign  </td>
+<td> 格式化对齐 </td>
+<td> command+shift+X</td>
+</tr>
+<tr>
+<td>XToDo  </td>
+<td> 全局todo&amp;fixme </td>
+<td> <code>control+T</code></td>
+</tr>
+<tr>
+<td>GitDiff   </td>
+<td> 高亮显示git变动 </td>
+<td> auto</td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[I'm Xiaofei]]></title>
+  <link href="http://hongfei.me/atom.xml" rel="self"/>
+  <link href="http://hongfei.me/"/>
+  <updated>2014-10-27T16:09:09+08:00</updated>
+  <id>http://hongfei.me/</id>
+  <author>
+    <name><![CDATA[王小飞]]></name>
+    <email><![CDATA[immmfei@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[FindSuperViewByChildView]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/findsuperviewbychildview/"/>
+    <updated>2014-10-27T15:11:44+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/findsuperviewbychildview</id>
+    <content type="html"><![CDATA[<p><code>报错：</code>当要通过子view获取父view时，</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>fatherView *xx = childView.superView;
+</span><span class='line'>-[UITableViewCellScrollView contentView]: unrecognized selector sent to instance</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>原因：</code>在不同SDK （iOS6/7/8）下，不同控件的内部层级结构会有所变化，会取到错误的view。</p>
+
+<p><code>解决：</code>( UITableViewCell为例 )</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(UITableViewCell *)findSuperViewByChildView(UIView *)childView
+</span><span class='line'>{
+</span><span class='line'>     UIView *superView = [childView superview];
+</span><span class='line'>     while (![superView isKindOfClass:[UITableViewCell class]]) {
+</span><span class='line'>               superView = [superView superview];
+</span><span class='line'>     }
+</span><span class='line'>     UITableViewCell *cell = (UITableViewCell *)superView;
+</span><span class='line'>     return cell;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[获取所有cell]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/uitableviewcell/"/>
+    <updated>2014-10-27T15:09:52+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/uitableviewcell</id>
+    <content type="html"><![CDATA[<p><code>代理方法默认会复用移出屏幕外的cell</code></p>
+
+<p>&ndash;(UITableViewCell <em>)tableView:(UITableView </em>)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</p>
+
+<p><code>所以当使用下面方法获取cell的时候，屏幕外的cell == nil；</code></p>
+
+<p>// Tableview方法</p>
+
+<p>UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];</p>
+
+<p><code>要想获得屏幕以外的cell，需调用数据源方法</code></p>
+
+<p>// UITableViewDataSource 方法</p>
+
+<p>UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[所有你乐于挥霍的时间，都不算作浪费]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/hui-huo-de-shi-jian/"/>
+    <updated>2014-10-27T15:08:19+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/hui-huo-de-shi-jian</id>
+    <content type="html"><![CDATA[<p>所有你乐于挥霍的时间，都不算作浪费。原 句更巧妙、耐人寻味，<code>the time you enjoy wasting is not wasted.</code>天大抵不过我高兴，姿态虽骄傲，却易为人所不齿。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[初来乍到]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/che/"/>
+    <updated>2014-10-27T15:07:17+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/che</id>
+    <content type="html"><![CDATA[<p>初来乍到，只身前行，你看的是新鲜的、繁华的人和事。于是你裂开嘴笑，你冲动，你渴望。但是你不能，你要站在原地，任凭他们以何种美妙的姿态映入你的眼帘，冲撞你的心。你都要忘记，让他们随风飘去。风沙会为他们的经过留下印记，化成你的经历，包裹成你的装甲，有了这些，你行走的脚步才会变的沉重有力，才不会被风刮倒，越来越强大。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[删除 Provisioning Profile]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/provisioningprofile/"/>
+    <updated>2014-10-27T15:00:52+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/provisioningprofile</id>
+    <content type="html"><![CDATA[<p>手动删除
+<code>xcode5 provisioning profile path： ~/Library/MobileDevice/Provisioning Profiles</code>命令行：<code>cd ~/Library/MobileDevice/Provisioning\ Profiles/</code>根据时间排序<code>ls -ltr</code>会列出所有的 PP 文件，根据日期删除没用的即可。也可以删除所有，然后再重新安装需要的。删除 <code>rm *</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UILabel中显示不同的字体和颜色]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/uilabelfonecolor/"/>
+    <updated>2014-10-27T14:57:04+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/uilabelfonecolor</id>
+    <content type="html"><![CDATA[<p>在项目开发中，我们经常会遇到在这样一种情形：在一个UILabel 使用不同的颜色或不同的字体来体现字符串，在iOS 6 以后我们可以很轻松的实现这一点，官方的API 为我们提供了UILabel类的<code>attributedText</code>, 使用不同颜色和不同字体的字符串，我们可以使用<code>NSAttributedText</code>和 <code>NSMutableAttributedText</code> 类来实现。</p>
+
+<p>code：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"Using NSAttributed String"];
+</span><span class='line'>[str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0,5)];
+</span><span class='line'>[str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(6,12)];
+</span><span class='line'>[str addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(19,6)];
+</span><span class='line'>[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Arial-BoldItalicMT" size:30.0] range:NSMakeRange(0, 5)];
+</span><span class='line'>[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:30.0] range:NSMakeRange(6, 12)];
+</span><span class='line'>[str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Courier-BoldOblique" size:30.0] range:NSMakeRange(19, 6)];
+</span><span class='line'>attrLabel.attributedText = str;</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode Plug-in]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/xcodeplugin/"/>
+    <updated>2014-10-27T14:49:26+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/xcodeplugin</id>
+    <content type="html"><![CDATA[<p><code>Xcode Plug</code></p>
+
+<table>
+<thead>
+<tr>
+<th>名称 </th>
+<th> 功能 </th>
+<th> 操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alcatrza </td>
+<td> 包管理工具 </td>
+<td> <code>command+shift+9</code></td>
+</tr>
+<tr>
+<td>BBUDebug…  </td>
+<td> 输入时隐藏DebugView </td>
+<td> auto</td>
+</tr>
+<tr>
+<td>BBUFull&hellip;  </td>
+<td> 多行显示issue </td>
+<td> </td>
+</tr>
+<tr>
+<td>KSImageNamed  </td>
+<td> imageWithName时显示图片 </td>
+<td> auto</td>
+</tr>
+<tr>
+<td>VVDocument    </td>
+<td> 标准化注释 </td>
+<td>  <code>///</code></td>
+</tr>
+<tr>
+<td>XAlign  </td>
+<td> 格式化对齐 </td>
+<td> command+shift+X</td>
+</tr>
+<tr>
+<td>XToDo  </td>
+<td> 全局todo&amp;fixme </td>
+<td> <code>control+T</code></td>
+</tr>
+<tr>
+<td>GitDiff   </td>
+<td> 高亮显示git变动 </td>
+<td> auto</td>
+</tr>
+</tbody>
+</table>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[导航控制器两种弹出方法]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa/"/>
+    <updated>2014-10-27T14:45:41+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa</id>
+    <content type="html"><![CDATA[<p> popToViewController用法:</p>
+
+<p>第一种：</p>
+
+<p>`[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:2]</p>
+
+<pre><code>  animated:YES];  `
+</code></pre>
+
+<p>第二种：</p>
+
+<p>`for (UIViewController *temp in self.navigationController.viewControllers) {</p>
+
+<pre><code>       if ([temp isKindOfClass:[你要跳转到的Controller class]]) {  
+          [self.navigationController popToViewController:temp animated:YES];  
+       }  
+</code></pre>
+
+<p>}`</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[统计代码行数]]></title>
+    <link href="http://hongfei.me/blog/2014/10/27/tong-ji-dai-ma-xing-shu/"/>
+    <updated>2014-10-27T14:40:55+08:00</updated>
+    <id>http://hongfei.me/blog/2014/10/27/tong-ji-dai-ma-xing-shu</id>
+    <content type="html"><![CDATA[<p>命令行cd项目目录</p>
+
+<p>1、列出total行数</p>
+
+<p><code>find . -name "*.m" -or -name "*.h" -or -name "*.xib" -or -name "*.c" |xargs grep -v "^$"|wc -l </code></p>
+
+<p>2、列出每个文件的行数并给出total：</p>
+
+<p><code>find . -name "*.m" -or -name "*.h" -or -name "*.xib" -or -name "*.c" |xargs wc -l </code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS7之TableView适配]]></title>
+    <link href="http://hongfei.me/blog/2014/03/26/ios7zhi-tableviewgua-pei/"/>
+    <updated>2014-03-26T15:12:24+08:00</updated>
+    <id>http://hongfei.me/blog/2014/03/26/ios7zhi-tableviewgua-pei</id>
+    <content type="html"><![CDATA[<p>iOS7下的app都是全屏的，意思就是所有控制器的view默认都是从屏幕的（0，0）开始。</p>
+
+<p>为了达到全屏效果的app，官方为UIviewController增加了几个属性：</p>
+
+<pre><code>@property(nonatomic,assign) UIRectEdge edgesForExtendedLayout NS_AVAILABLE_IOS(7_0); // Defaults to UIRectEdgeAll
+
+@property(nonatomic,assign) BOOL extendedLayoutIncludesOpaqueBars NS_AVAILABLE_IOS(7_0); // Defaults to NO, but bars are translucent by default on 7_0.  
+
+@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets NS_AVAILABLE_IOS(7_0); // Defaults to YES
+</code></pre>
+
+<!--more-->
+
+
+<h3>一：</h3>
+
+<p>　　属性edgesForExtendedLayout，意思大概是边缘向四周展开</p>
+
+<p>　　edgesForExtendedLayout 值是结构体，默认值是 UIRectEdgeAll，</p>
+
+<p>　　也就是说，当一个控制器要往父控制器添加的时候，上下左右填充满整个屏幕。</p>
+
+<p>　　<code>例1：</code></p>
+
+<p>　　UIViewController添加到UINavController上时,uiviewcontroller的y值 == 状态栏的的y</p>
+
+<p>　　这时候设置</p>
+
+<pre><code>　　　　　　self.edgesForExtendedLayout = UIRectEdgeNone;
+</code></pre>
+
+<p>　　// uiviewcontroller的y值 == 导航栏y + 导航栏height</p>
+
+<p>　　/**</p>
+
+<p>　　　　这种情况还可以设置，导航栏的bar的透明度属性translucent为no</p>
+
+<pre><code>        self.navigationController.navigationBar.translucent = NO;
+</code></pre>
+
+<p>　　 　 translucent属性在iOS6之前默认为no，</p>
+
+<p>　　　　而在iOS7下的导航栏默认却是半透明的，为yes，所以该属性不会占据空间。</p>
+
+<p>　　*/</p>
+
+<p>　　<code>例2：</code></p>
+
+<p>　　UITableViewController添加到UITabBarController上时，UITableViewController的底部一部分cell会被TabBar挡住</p>
+
+<p>　　这时候设置</p>
+
+<pre><code>　　　　　　self.edgesForExtendedLayout = UIRectEdgeNone;
+</code></pre>
+
+<p>　　// TabBar的y值 == CGRectGetMaxY（UITableViewController）</p>
+
+<h3>二 ：　</h3>
+
+<pre><code>    self.extendedLayoutIncludesOpaqueBars = YES;
+</code></pre>
+
+<p>　　意思展开包括状态栏</p>
+
+<h3>三：</h3>
+
+<pre><code>  self.automaticallyAdjustsScrollViewInsets = YES;
+</code></pre>
+
+<p>　　当涉及到scrollView、tableview时，在设置完数据的时候，内部会改变contentInsets的top值为64</p>
+
+<p>　　<code>例如：</code></p>
+
+<p>　　　　group样式的tableView在有导航栏的控制器下，第0组的头部会多出一部分高度h</p>
+
+<p>　　　　原因是</p>
+
+<p>　　　　　　<code>iOS7下group样式的tabelView的第0组第0个cell，在tableview中的y值为35！！！</code></p>
+
+<p>　　　　　　并且在设置完cell数据之后，系统默认会执行</p>
+
+<p>　　　　　　　　self.automaticallyAdjustsScrollViewInsets = YES;</p>
+
+<p>　　　　　　　　也就是tableview的contentInset.top = 64;</p>
+
+<p>　　　　</p>
+
+<p>　　　　所以 第0组第0行cell的y值 = 64 + 35.</p>
+
+<p>　　　　</p>
+
+<p>　　　　要达到第0组第0行cell的y值 = 导航栏底部 的效果</p>
+
+<p>　　　　就要在cell设置数据之前，</p>
+
+<pre><code>    　　　　tableView.contentInset = UIEdgeInsetsMake(- 35, 0, 0, 0);
+</code></pre>
+
+<p>　　　　这样在cell在设置完数据后，系统内部改变top值增加64，就恰好达到效果。</p>
+
+<p>　　　　</p>
+
+<p>　　　　若要达到每个group头部等高效果，　　　　</p>
+
+<pre><code>    tableView.sectionHeaderHeight = cellSectionHeight;
+    tableView.sectionFooterHeight = 0;
+    tableView.contentInset = UIEdgeInsetsMake(cellSectionHeight - 35, 0, 0, 0);
+</code></pre>
+
+<p> 　</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[多线程之NSOperation &amp; GCD]]></title>
+    <link href="http://hongfei.me/blog/2014/03/11/duo-xian-cheng-zhi-nsoperation-and-gcd/"/>
+    <updated>2014-03-11T18:28:55+08:00</updated>
+    <id>http://hongfei.me/blog/2014/03/11/duo-xian-cheng-zhi-nsoperation-and-gcd</id>
+    <content type="html"><![CDATA[<p>更新显示<code>UI界面</code>、<code>处理用户触摸事件</code>都在<code>主线程</code>，因此不能将其他太耗时的操作放在主线程中执行，不然会造成主线程堵塞(出现卡机现象)，带来极坏的用户体验。一般的解决方案就是将那些耗时的操作放到<code>另外一个线程</code>中去执行，<code>多线程编程是防止主线程堵塞，增加运行效率的最佳方法。</code></p>
+
+<p><strong><code>0.performSelectorInBackground:</code></strong></p>
+
+<pre><code> //开启后台线程执行任务
+ [self performSelectorInBackground:@selector(test) withObject:nil];
+</code></pre>
+
+<!--more-->
+
+
+<p><strong><code>1.NSThread</code></strong>
+这种方法需要管理线程的生命周期、同步、加锁问题，会导致一定的性能开销</p>
+
+<p><em>优点</em>：NSThread比其他多线程方案较轻量级，更直观地控制线程对象</p>
+
+<p><em>缺点</em>：需要自己管理线程的生命周期，线程同步。线程同步对数据的加锁会有一定的系统开销</p>
+
+<p><strong><code>2.NSOperation和NSOperationQueue</code></strong>
+是基于OC实现的。</p>
+
+<p> 1> 使用步骤</p>
+
+<ul>
+<li><p> 创建NSOperation</p></li>
+<li><p> 添加NSOperation到NSOperationQueue</p></li>
+</ul>
+
+
+<p> 2> 优点</p>
+
+<ul>
+<li><p> 更加面向对象</p></li>
+<li><p> 可以控制最大并发数(<code>同一时间执行线程的数量，不是线程数量</code>)  maxConcurrentOperationCount</p></li>
+<li><p> 可以为每个operation添加<code>completionBlock</code>：在Operation执行完成时自动执行这个Block。completionBlock<code>实现原理</code>是对Operation的<code>isFinnshed</code>字段进行<code>KVO</code>（Key-Value Observing），当监听到isFinnished变成YES时，就执行completionBlock。</p></li>
+<li><p> 添加任务（Operation）之间的<code>依赖 addDependency</code>。来控制operation的执行顺序</p>
+
+<pre><code>// operation2执行完，再执行operation1
+[operation1 addDependency:operation2];
+[operation1 removeDependency:operation2];
+</code></pre></li>
+</ul>
+
+
+<p>3> 类 : NSOperation是一个抽象类，无法直接使用，它只定义了Operation的一些基本方法。我们需要创建一个继承于它的子类或者使用系统预定义的子类。目前系统预定义了两个子类：<code>NSInvocationOperation</code>和<code>NSBlockOperation</code>。</p>
+
+<ul>
+<li><p><em><code>NSInvocationOperation</code></em>: NSInvoationOperation是一个基于对象和selector的Operation，使用这个你只需要指定对象以及任务的<code>selector</code>，如果必要，你还可以设定传递的对象参数.</p>
+
+<pre><code>  NSInvocationOperation *invacationOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(doSomethingWithObj:) object:obj];
+
+  //同时当这个Operation完成后，你还可以获取Operation中Invation执行后返回的结果对象。
+  id result = [invacationOperation result];
+</code></pre></li>
+<li><p><em><code>NSBlockOperation</code></em>:在一个<code>Block</code>中执行一个任务，这时我们就需要用到NSBlockOperation。可以通过blockOperationWithBlock:方法来方便地创建一个NSBlockOperation：</p>
+
+<pre><code>  NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+  //Do something here.
+  }];
+  // 启动和取消
+  [operation start];
+  [operation cancel];
+</code></pre></li>
+</ul>
+
+
+<p><strong><code>3.Grand Centeral Dispatch</code></strong>
+简称GCD，iOS4才开始支持，是纯C语言的API。自iPad2开始，苹果设备开始有了双核CPU，为了充分利用这2个核，GCD提供了一些新特性来支持多核并行编程。</p>
+
+<p> 1> 队列类型</p>
+
+<ul>
+<li><p>全局队列</p>
+
+<ul>
+<li> 所有添加到全局队列中的任务都是并发执行（<code>同时执行</code>，可能会开启多个线程）</li>
+<li> dispatch_get_global_queue</li>
+</ul>
+</li>
+<li><p>串行队列（<code>自己创建</code>）</p>
+
+<ul>
+<li> 所有添加到串行队列中的任务都是按顺序执行（<code>开一条线程,在一条线程里执行</code>）</li>
+<li> dispatch_queue_create(&ldquo;myqueue&rdquo;, 0);</li>
+</ul>
+</li>
+<li><p>主队列</p>
+
+<ul>
+<li> 所有添加到主队列中的任务都是在主线程中执行的(跟方法名没有关系)</li>
+<li> dispatch_get_main_queue</li>
+</ul>
+</li>
+</ul>
+
+
+<p> 2> 同步（<code>不开新线程</code>）还是异步（<code>开新线程</code>），取决于方法名(不影响主队列，影响全局队列、串行队列)</p>
+
+<ul>
+<li> 同步：dispatch_sync,<code>在当前线程执行任务，不会开启新的线程</code></li>
+<li> 异步：dispatch_async，<code>在其他线程执行任务，会开启新的线程</code></li>
+</ul>
+
+
+<p>3> 高级用法还包括:<code>Dispatch Group</code>、<code>Dispatch Source</code>、<code>Dispatch信号量</code>、<code>dispatch_apply并行执行循环</code></p>
+
+<p>4> 代码片段：</p>
+
+<pre><code> // 1.后台异步执行（开新线程）：
+ dispatch_async(dispatch_get_global_queue(0, 0), ^{
+      // something
+    NSLog(@"dispatch_async-%@", [NSThread currentThread]);
+ });
+
+ // 2.主线程执行：
+ dispatch_async(dispatch_get_main_queue(), ^{
+      // something
+ });
+
+ // 3.一次性执行：
+ static dispatch_once_t onceToken;
+ dispatch_once(&amp;onceToken, ^{
+     // code to be executed once
+ });
+
+ // 4.延迟2秒执行：
+ double delayInSeconds = 2.0;
+ dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+     // code to be executed on the main queue after delay
+ });
+
+ // 5. 如果for循环中处理的任务是可并发的，显然放到一个线程中处理是很慢的. dispatch_apply可替代可并发（可同时进行）的for循环，以提高执行效率。
+ dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+ dispatch_apply(count, queue, ^(size_t i) {
+ //do a lot of work here.
+ doSomething(i);
+ });
+
+ // 6. Dispatch Group:有时候我们进行下一步操作，而这个操作需要等待几个任务处理完毕后才能继续，这时我们就需要用的Dispatch Group。
+ dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+dispatch_group_t group = dispatch_group_create();
+dispatch_group_async(group, queue, ^{
+// Some asynchronous work
+});
+
+// 把需要顺序执行的任务放在不同的组里，把一些任务放到Dispatch Group后，
+dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+// Do some work after.
+dispatch_release(group);
+
+// 7.Dispatch信号量是一些有限可数资源.
+//创建资源的信号量，只创建一次，比如2台打印机，那么RESOURCE_SIZE为2.
+dispatch_semaphore_t sema = dispatch_semaphore_create(RESOURCE_SIZE);
+
+//如果任务使用一个资源时，使用前调用dispatch_semaphore_wait，用完后释放dispatch_semaphore_signal。
+//下面的代码可能在多个线程中调用多次
+dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+//do some work here. the work will use one resource.
+dispatch_semaphore_signal(sema);
+</code></pre>
+
+<hr />
+
+<p>参考资料：</p>
+
+<p>   <a href="http://blog.xcodev.com/archives/operation-queue-intro/">并发编程之Operation Queue</a></p>
+
+<p>   <a href="http://blog.xcodev.com/archives/gcd-intro/">并发编程之GCD</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[GitHub for mac使用细节]]></title>
+    <link href="http://hongfei.me/blog/2014/03/03/github-for-macshi-yong-xi-jie/"/>
+    <updated>2014-03-03T17:14:43+08:00</updated>
+    <id>http://hongfei.me/blog/2014/03/03/github-for-macshi-yong-xi-jie</id>
+    <content type="html"><![CDATA[<ul>
+<li><strong><em>将已有的项目上传：</em></strong></li>
+</ul>
+
+
+<p>首先因为项目中一些文件不需要版本控制，需要忽略上传。</p>
+
+<p>这时候简便方法是让github帮你生成.gitignore文件（里面记录了忽略文件格式的细节）</p>
+
+<p>在github上create new Repository，并选择Add .gitignore</p>
+
+<p>这时候仓库帮你生成两个文件 . gitignore和 README.md</p>
+
+<p>注意：这里不能创建本地Repository。如果在已有的项目中git init，再push的时候，你github上的仓库和本地仓库里的文件不一致。是无法上传的。</p>
+
+<p>所以下一步要做的是clone github上创建的仓库到本地（这时候他就是本地仓库）。</p>
+
+<p>然后将你的项目放到这个仓库里。</p>
+
+<!--more-->
+
+
+<p>终端输入 git add . （暂存本地仓库里的所有文件和文件夹）</p>
+
+<p>git commit -m ‘说明内容’’: 提交执行说明（必须）</p>
+
+<p>git push origin master  （由于clone的仓库，不需要绑定远程仓库地址，直接push）</p>
+
+<p>这样add的文件都上传到github仓库了</p>
+
+<hr />
+
+<ul>
+<li><strong><em>上传项目到空仓库</em></strong></li>
+</ul>
+
+
+<p>在github上create new Repository，Add .gitignore为None</p>
+
+<p>然后github会提示你本仓库的命令行</p>
+
+<p>cd 项目文件夹（就视为本地仓库）</p>
+
+<p>git init</p>
+
+<p>git add .</p>
+
+<p>git commit -m ‘…’</p>
+
+<p>git remote add origin <a href="https://github.com/wangxiaofeinin/test.git">https://github.com/wangxiaofeinin/test.git</a> （给远程仓库添加起源。就是让本地仓库和远程仓库绑定同步）</p>
+
+<p>git push origin master</p>
+
+<p>touch README.md （为空仓库添加介绍说明。这一步不是必须，可以手动在github上添加）</p>
+
+<p>git add README.md</p>
+
+<hr />
+
+<ul>
+<li><strong><em>文件状态</em></strong></li>
+</ul>
+
+
+<p>git add 文件  是跟踪一个新文件，以备上传。</p>
+
+<p>git status命令查看被跟踪文件的状态</p>
+
+<p>输出“ Changes to be committed：” 这行下面的，都是add后已被跟踪的，处于暂存状态的文件。</p>
+
+<p>“Changed but no updated” 这行下面记录着已经跟踪的被修改了的文件，需要重新 add它，才会成为暂存状态的文件。重新git status 它会显示在committed下面</p>
+
+<p>// 解决每次push都要求输入用户名密码问题，要配置本地git个人信息：</p>
+
+<p>git config —global user.name “wangxiaofeinin”</p>
+
+<p>git config —global user.email “285671298@qq.com”</p>
+
+<hr />
+
+<ul>
+<li><p><strong><em>github 客户端使用</em></strong></p></li>
+<li><p>没有远程仓库。创建本地仓库，指向已有项目。输入commit信息，然后push，会提示在github上创建新远程仓库，输入仓库名即可在github上同步。</p></li>
+<li><p>有远程仓库，使用客户端clone下来。在clone的文件夹里添加修改文件，然后在客户端项目的 Changes里，会自动添加你修改和添加的文件，输入commit，push即可。</p></li>
+</ul>
+
+
+<hr />
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[为了什么]]></title>
+    <link href="http://hongfei.me/blog/2014/02/27/wei-liao-shi-yao/"/>
+    <updated>2014-02-27T01:18:05+08:00</updated>
+    <id>http://hongfei.me/blog/2014/02/27/wei-liao-shi-yao</id>
+    <content type="html"><![CDATA[<p><img src="http://hongfei.me/images/dog.png" alt="dog" /></p>
+
+<p>经过几天时间，熬夜搭建这个博客，宁愿搞得作息混乱，主要是有两个原因：</p>
+
+<h4>第一个原因：</h4>
+
+<p>在此省略一万字的吐槽。。。
+这漫漫长而满地坑的过程，让我足足好几天夜里三四点睡不着觉！其实技术方面真谈不上有多少，跟着教程走就，但整个过程让我觉得搞 <code>IT</code> 虽然很牛叉，但真的不容易啊！连跟着教程一步步来都让我觉得煎熬，身为21世纪祖国的花朵的我，亚历山大！！！</p>
+
+<!--more-->
+
+
+<p>不过回到初衷上是想着通过这个博客，能帮助我定期的总结归纳学习的过程，也能让自己在必要的时候冷静的思考一些东西。</p>
+
+<h4>第二个原因：</h4>
+
+<p>主要是本人语文成绩很差，在遣词造句上面有所另类，经常表达不清。而且日常生活中的说话时不时会噎死对方，基于这些，也希望通过这个博客，提高下语文水平，这样也算对得起我的语文老师了！</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[octopress git test]]></title>
+    <link href="http://hongfei.me/blog/2014/02/27/octopress-git-test/"/>
+    <updated>2014-02-27T00:23:17+08:00</updated>
+    <id>http://hongfei.me/blog/2014/02/27/octopress-git-test</id>
+    <content type="html"><![CDATA[<p>octopress + github test</p>
+]]></content>
+  </entry>
+  
+</feed>

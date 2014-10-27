@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: 碎碎念 | I'm Xiaofei]]></title>
+  <link href="http://hongfei.me/blog/categories/sui-sui-nian/atom.xml" rel="self"/>
+  <link href="http://hongfei.me/"/>
+  <updated>2014-10-27T16:09:09+08:00</updated>
+  <id>http://hongfei.me/</id>
+  <author>
+    <name><![CDATA[王小飞]]></name>
+    <email><![CDATA[immmfei@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[为了什么]]></title>
+    <link href="http://hongfei.me/blog/2014/02/27/wei-liao-shi-yao/"/>
+    <updated>2014-02-27T01:18:05+08:00</updated>
+    <id>http://hongfei.me/blog/2014/02/27/wei-liao-shi-yao</id>
+    <content type="html"><![CDATA[<p><img src="http://hongfei.me/images/dog.png" alt="dog" /></p>
+
+<p>经过几天时间，熬夜搭建这个博客，宁愿搞得作息混乱，主要是有两个原因：</p>
+
+<h4>第一个原因：</h4>
+
+<p>在此省略一万字的吐槽。。。
+这漫漫长而满地坑的过程，让我足足好几天夜里三四点睡不着觉！其实技术方面真谈不上有多少，跟着教程走就，但整个过程让我觉得搞 <code>IT</code> 虽然很牛叉，但真的不容易啊！连跟着教程一步步来都让我觉得煎熬，身为21世纪祖国的花朵的我，亚历山大！！！</p>
+
+<!--more-->
+
+
+<p>不过回到初衷上是想着通过这个博客，能帮助我定期的总结归纳学习的过程，也能让自己在必要的时候冷静的思考一些东西。</p>
+
+<h4>第二个原因：</h4>
+
+<p>主要是本人语文成绩很差，在遣词造句上面有所另类，经常表达不清。而且日常生活中的说话时不时会噎死对方，基于这些，也希望通过这个博客，提高下语文水平，这样也算对得起我的语文老师了！</p>
+]]></content>
+  </entry>
+  
+</feed>
