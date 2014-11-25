@@ -30,3 +30,5 @@ var github = (function(){
     }
   };
 })();
+
+var a = 4;

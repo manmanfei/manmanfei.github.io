@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | I'm Xiaofei]]></title>
   <link href="http://hongfei.me/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://hongfei.me/"/>
-  <updated>2014-10-28T18:58:55+08:00</updated>
+  <updated>2014-11-25T11:43:22+08:00</updated>
   <id>http://hongfei.me/</id>
   <author>
     <name><![CDATA[王小飞]]></name>
@@ -12,6 +12,119 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS8 定位兼容]]></title>
+    <link href="http://hongfei.me/blog/2014/11/25/ioslocation/"/>
+    <updated>2014-11-25T11:25:52+08:00</updated>
+    <id>http://hongfei.me/blog/2014/11/25/ioslocation</id>
+    <content type="html"><![CDATA[<p>iOS7及之前版本的SDk是这样启动系统定位的</p>
+
+<p>// 判断定位操作是否被允许</p>
+
+<p>`if([CLLocationManager locationServicesEnabled])
+{</p>
+
+<pre><code>locationManager = [[CLLocationManager alloc] init];
+locationManager.delegate = self;
+[locationManager startUpdatingLocation];
+</code></pre>
+
+<p>}else {</p>
+
+<pre><code>//提示用户无法进行定位操作
+</code></pre>
+
+<p>}`</p>
+
+<hr />
+
+<p>// 如果在iOS8下用这样的方式，你会发现无法定位，那是因为iOS8下添加了新的方法</p>
+
+<p> 表示使用应用程序期间  开启定位<br/>
+<code>- (void)requestWhenInUseAuthorization </code></p>
+
+<p>//表示始终 开启定位<br/>
+<code>- (void)requestAlwaysAuthorization</code></p>
+
+<p>两者区别在于，iOS7 开始，有更强大的后台运行功能，如果用 <code>requestAlwaysAuthorization</code> 方法，则表示后台运行时也会用到定位
+iOS8 下使用系统定位如下：</p>
+
+<hr />
+
+<p>// 判断定位操作是否被允许 <br/>
+`if ([CLLocationManager locationServicesEnabled])
+{</p>
+
+<pre><code> self.locationManager = [[CLLocationManager alloc] init];
+ _locationManager.delegate = self;
+ IOS8_OR_LATER ? [self startTrackingLocation]: [_locationManager startUpdatingLocation];
+ self.failToUpdateLocation = NO;
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code> self.failToUpdateLocation = YES;
+</code></pre>
+
+<p>}`</p>
+
+<p>// iOS8 跟踪定位</p>
+
+<p>`&ndash; (void)startTrackingLocation
+{</p>
+
+<pre><code> CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+ if (status == kCLAuthorizationStatusNotDetermined) {
+      if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+      [self.locationManager requestWhenInUseAuthorization];
+      }
+ }
+ else if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways)
+ {
+      [_locationManager startUpdatingLocation];
+ }
+</code></pre>
+
+<p>}`</p>
+
+<p>同时还需要添加新的方法，其他的都一样</p>
+
+<p>`&ndash; (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{      switch (status) {</p>
+
+<pre><code>    case kCLAuthorizationStatusAuthorizedAlways:
+    [_locationManager startUpdatingLocation];
+    break;
+case kCLAuthorizationStatusAuthorizedWhenInUse:
+    [self startTrackingLocation];
+break;
+case kCLAuthorizationStatusNotDetermined:
+    if ([self.locationManager       respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+    [self.locationManager requestWhenInUseAuthorization];
+    }
+    break;
+default:
+    break;
+</code></pre>
+
+<p>}}
+`</p>
+
+<hr />
+
+<p>除了这些，你还需要在 info.plist 里面添加新的键值，否则 也是无法定位的
+//表示使用应用程序期间  开启定位  &ndash; (void)requestWhenInUseAuthorization</p>
+
+<p>对应 NSLocationWhenInUseUsageDescription String @“测试测试测试” //表示始终 开启定位  &ndash; (void)requestAlwaysAuthorization</p>
+
+<p> 对应 NSLocationAlwaysUsageDescription String @“测试测试测试”</p>
+
+<p>NSLocationWhenInUseUsageDescription(或者NSLocationAlwaysUsageDescription) 对应的文字会在第一次请求用户同意定位的时候出现，还有 设置 > 隐私 > 定位 > your app 里面也会看到，比如下面就是开启app时出现的</p>
+
+<p><code>（注意：info.plist这两个值的类型必须是string，若为bool值，设置-隐私-定位查看app时，设置会crash。）</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[FindSuperViewByChildView]]></title>
@@ -98,33 +211,6 @@ NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithStri
 [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Courier-BoldOblique" size:30.0] range:NSMakeRange(19, 6)];
 attrLabel.attributedText = str;
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[导航控制器两种弹出方法]]></title>
-    <link href="http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa/"/>
-    <updated>2014-10-27T14:45:41+08:00</updated>
-    <id>http://hongfei.me/blog/2014/10/27/dao-hang-kong-zhi-qi-liang-chong-dan-chu-fang-fa</id>
-    <content type="html"><![CDATA[<p> popToViewController用法:</p>
-
-<p>第一种：</p>
-
-<p>`[self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:2]</p>
-
-<pre><code>  animated:YES];  `
-</code></pre>
-
-<p>第二种：</p>
-
-<p>`for (UIViewController *temp in self.navigationController.viewControllers) {</p>
-
-<pre><code>       if ([temp isKindOfClass:[你要跳转到的Controller class]]) {  
-          [self.navigationController popToViewController:temp animated:YES];  
-       }  
-</code></pre>
-
-<p>}`</p>
 ]]></content>
   </entry>
   

@@ -5,11 +5,12 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>I'm Xiaofei</title>
+	<title>iOS8 定位兼容 - I'm Xiaofei</title>
 	<meta name="author" content="王小飞">
 
 	
-	<meta name="description" content="Mar 26th, 2014 iOS iOS7之TableView适配 iOS7下的app都是全屏的，意思就是所有控制器的view默认都是从屏幕的（0，0）开始。 为了达到全屏效果的app，官方为UIviewController增加了几个属性： @property(nonatomic, &hellip;">
+	<meta name="description" content="iOS8 定位兼容 iOS7及之前版本的SDk是这样启动系统定位的 // 判断定位操作是否被允许 `if([CLLocationManager locationServicesEnabled])
+{ locationManager = [[CLLocationManager alloc] &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@
 
 	<link href="/atom.xml" rel="alternate" title="I'm Xiaofei" type="application/atom+xml">
 	
-	<link rel="canonical" href="http://hongfei.me/blog/page/2/">
+	<link rel="canonical" href="http://hongfei.me/blog/2014/11/25/ioslocation/">
 	<link href="/favicon.png" rel="shortcut icon">
 	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<link href="/stylesheets/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -116,245 +117,140 @@
 				
 			
 			<div class="mid-col-container">
-				<div id="content" class="inner">
-<div itemscope itemtype="http://schema.org/Blog">
+				<div id="content" class="inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+	<h1 class="title" itemprop="name">iOS8 定位兼容</h1>
+	<div class="entry-content" itemprop="articleBody"><p>iOS7及之前版本的SDk是这样启动系统定位的</p>
 
+<p>// 判断定位操作是否被允许</p>
 
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
+<p>`if([CLLocationManager locationServicesEnabled])
+{</p>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-26T15:12:24+08:00" data-updated="true" itemprop="datePublished">Mar 26<span>th</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ios/'>iOS</a>
-
-
-</div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/03/26/ios7zhi-tableviewgua-pei/" itemprop="url">iOS7之TableView适配</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>iOS7下的app都是全屏的，意思就是所有控制器的view默认都是从屏幕的（0，0）开始。</p>
-
-<p>为了达到全屏效果的app，官方为UIviewController增加了几个属性：</p>
-
-<pre><code>@property(nonatomic,assign) UIRectEdge edgesForExtendedLayout NS_AVAILABLE_IOS(7_0); // Defaults to UIRectEdgeAll
-
-@property(nonatomic,assign) BOOL extendedLayoutIncludesOpaqueBars NS_AVAILABLE_IOS(7_0); // Defaults to NO, but bars are translucent by default on 7_0.  
-
-@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets NS_AVAILABLE_IOS(7_0); // Defaults to YES
+<pre><code>locationManager = [[CLLocationManager alloc] init];
+locationManager.delegate = self;
+[locationManager startUpdatingLocation];
 </code></pre>
 
+<p>}else {</p>
 
-		
-		<a href="/blog/2014/03/26/ios7zhi-tableviewgua-pei/" class="more-link">Read on &rarr;</a>
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-11T18:28:55+08:00" data-updated="true" itemprop="datePublished">Mar 11<span>th</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ios/'>iOS</a>
-
-
-</div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/03/11/duo-xian-cheng-zhi-nsoperation-and-gcd/" itemprop="url">多线程之NSOperation &amp; GCD</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>更新显示<code>UI界面</code>、<code>处理用户触摸事件</code>都在<code>主线程</code>，因此不能将其他太耗时的操作放在主线程中执行，不然会造成主线程堵塞(出现卡机现象)，带来极坏的用户体验。一般的解决方案就是将那些耗时的操作放到<code>另外一个线程</code>中去执行，<code>多线程编程是防止主线程堵塞，增加运行效率的最佳方法。</code></p>
-
-<p><strong><code>0.performSelectorInBackground:</code></strong></p>
-
-<pre><code> //开启后台线程执行任务
- [self performSelectorInBackground:@selector(test) withObject:nil];
+<pre><code>//提示用户无法进行定位操作
 </code></pre>
 
+<p>}`</p>
 
-		
-		<a href="/blog/2014/03/11/duo-xian-cheng-zhi-nsoperation-and-gcd/" class="more-link">Read on &rarr;</a>
-	</div>
+<hr />
+
+<p>// 如果在iOS8下用这样的方式，你会发现无法定位，那是因为iOS8下添加了新的方法</p>
+
+<p> 表示使用应用程序期间  开启定位<br/>
+<code>- (void)requestWhenInUseAuthorization </code></p>
+
+<p>//表示始终 开启定位<br/>
+<code>- (void)requestAlwaysAuthorization</code></p>
+
+<p>两者区别在于，iOS7 开始，有更强大的后台运行功能，如果用 <code>requestAlwaysAuthorization</code> 方法，则表示后台运行时也会用到定位
+iOS8 下使用系统定位如下：</p>
+
+<hr />
+
+<p>// 判断定位操作是否被允许 <br/>
+`if ([CLLocationManager locationServicesEnabled])
+{</p>
+
+<pre><code> self.locationManager = [[CLLocationManager alloc] init];
+ _locationManager.delegate = self;
+ IOS8_OR_LATER ? [self startTrackingLocation]: [_locationManager startUpdatingLocation];
+ self.failToUpdateLocation = NO;
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code> self.failToUpdateLocation = YES;
+</code></pre>
+
+<p>}`</p>
+
+<p>// iOS8 跟踪定位</p>
+
+<p>`&ndash; (void)startTrackingLocation
+{</p>
+
+<pre><code> CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+ if (status == kCLAuthorizationStatusNotDetermined) {
+      if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+      [self.locationManager requestWhenInUseAuthorization];
+      }
+ }
+ else if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways)
+ {
+      [_locationManager startUpdatingLocation];
+ }
+</code></pre>
+
+<p>}`</p>
+
+<p>同时还需要添加新的方法，其他的都一样</p>
+
+<p>`&ndash; (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{      switch (status) {</p>
+
+<pre><code>    case kCLAuthorizationStatusAuthorizedAlways:
+    [_locationManager startUpdatingLocation];
+    break;
+case kCLAuthorizationStatusAuthorizedWhenInUse:
+    [self startTrackingLocation];
+break;
+case kCLAuthorizationStatusNotDetermined:
+    if ([self.locationManager       respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+    [self.locationManager requestWhenInUseAuthorization];
+    }
+    break;
+default:
+    break;
+</code></pre>
+
+<p>}}
+`</p>
+
+<hr />
+
+<p>除了这些，你还需要在 info.plist 里面添加新的键值，否则 也是无法定位的
+//表示使用应用程序期间  开启定位  &ndash; (void)requestWhenInUseAuthorization</p>
+
+<p>对应 NSLocationWhenInUseUsageDescription String @“测试测试测试” //表示始终 开启定位  &ndash; (void)requestAlwaysAuthorization</p>
+
+<p> 对应 NSLocationAlwaysUsageDescription String @“测试测试测试”</p>
+
+<p>NSLocationWhenInUseUsageDescription(或者NSLocationAlwaysUsageDescription) 对应的文字会在第一次请求用户同意定位的时候出现，还有 设置 > 隐私 > 定位 > your app 里面也会看到，比如下面就是开启app时出现的</p>
+
+<p><code>（注意：info.plist这两个值的类型必须是string，若为bool值，设置-隐私-定位查看app时，设置会crash。）</code></p>
+</div>
 
 </article>
 
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-03T17:14:43+08:00" data-updated="true" itemprop="datePublished">Mar 3<span>rd</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/github/'>github</a>
-
-
+	<div class="share">
+    <!-- AddThis Button BEGIN -->
+    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+        <a class="addthis_button_preferred_1"></a>
+        <a class="addthis_button_preferred_2"></a>
+        <a class="addthis_button_preferred_3"></a>
+        <a class="addthis_button_preferred_4"></a>
+        <a class="addthis_button_compact"></a>
+        <a class="addthis_counter addthis_bubble_style"></a>
+    </div>
+    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-530a529b5f70b39d"></script>
+    <!-- AddThis Button END -->
 </div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/03/03/github-for-macshi-yong-xi-jie/" itemprop="url">GitHub for Mac使用细节</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<ul>
-<li><strong><em>将已有的项目上传：</em></strong></li>
-</ul>
-
-
-<p>首先因为项目中一些文件不需要版本控制，需要忽略上传。</p>
-
-<p>这时候简便方法是让github帮你生成.gitignore文件（里面记录了忽略文件格式的细节）</p>
-
-<p>在github上create new Repository，并选择Add .gitignore</p>
-
-<p>这时候仓库帮你生成两个文件 . gitignore和 README.md</p>
-
-<p>注意：这里不能创建本地Repository。如果在已有的项目中git init，再push的时候，你github上的仓库和本地仓库里的文件不一致。是无法上传的。</p>
-
-<p>所以下一步要做的是clone github上创建的仓库到本地（这时候他就是本地仓库）。</p>
-
-<p>然后将你的项目放到这个仓库里。</p>
-
-
-		
-		<a href="/blog/2014/03/03/github-for-macshi-yong-xi-jie/" class="more-link">Read on &rarr;</a>
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
 
 
 
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-27T01:18:05+08:00" data-updated="true" itemprop="datePublished">Feb 27<span>th</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/sui-sui-nian/'>碎碎念</a>
-
-
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/02/27/wei-liao-shi-yao/" itemprop="url">为了什么</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p><img src="http://hongfei.me/images/dog.png" alt="dog" /></p>
-
-<p>经过几天时间，熬夜搭建这个博客，宁愿搞得作息混乱，主要是有两个原因：</p>
-
-<h4>第一个原因：</h4>
-
-<p>在此省略一万字的吐槽。。。
-这漫漫长而满地坑的过程，让我足足好几天夜里三四点睡不着觉！其实技术方面真谈不上有多少，跟着教程走就，但整个过程让我觉得搞 <code>IT</code> 虽然很牛叉，但真的不容易啊！连跟着教程一步步来都让我觉得煎熬，身为21世纪祖国的花朵的我，亚历山大！！！</p>
-
-
-		
-		<a href="/blog/2014/02/27/wei-liao-shi-yao/" class="more-link">Read on &rarr;</a>
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-27T00:23:17+08:00" data-updated="true" itemprop="datePublished">Feb 27<span>th</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/octopress/'>octopress</a>
-
-
+</section>
 </div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/02/27/octopress-git-test/" itemprop="url">Octopress Git Test</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>octopress + github test</p>
-
-		
-		
-	</div>
-
-</article>
-
-</div>
-<nav id="pagenavi">
-    
-        <a href="/" class="prev">Prev</a>
-    
-    
-    <div class="center"><a href="/blog/archives">Blog Archives</a></div>
-</nav></div>
 			</div>
 			<footer id="footer" class="inner"><p>
   Copyright &copy; 2014 - 王小飞 -

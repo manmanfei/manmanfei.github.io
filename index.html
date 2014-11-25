@@ -9,10 +9,8 @@
 	<meta name="author" content="王小飞">
 
 	
-	<meta name="description" content="Oct 27th, 2014 iOS FindSuperViewByChildView 报错：当要通过子view获取父view时， 1
-2
-fatherView *xx = childView.superView;
--[UITableViewCellScrollView contentView &hellip;">
+	<meta name="description" content="Nov 25th, 2014 iOS iOS8 定位兼容 iOS7及之前版本的SDk是这样启动系统定位的 // 判断定位操作是否被允许 `if([CLLocationManager locationServicesEnabled])
+{ locationManager = [[ &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -121,6 +119,147 @@ fatherView *xx = childView.superView;
 			<div class="mid-col-container">
 				<div id="content" class="inner">
 <div itemscope itemtype="http://schema.org/Blog">
+
+
+    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="meta">
+		<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-25T11:25:52+08:00" data-updated="true" itemprop="datePublished">Nov 25<span>th</span>, 2014</time></div>
+		<div class="tags">
+
+
+	<a class='category' href='/blog/categories/ios/'>iOS</a>
+
+
+</div>
+		
+
+		
+	</div>
+	<h1 class="title" itemprop="name"><a href="/blog/2014/11/25/ioslocation/" itemprop="url">iOS8 定位兼容</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>iOS7及之前版本的SDk是这样启动系统定位的</p>
+
+<p>// 判断定位操作是否被允许</p>
+
+<p>`if([CLLocationManager locationServicesEnabled])
+{</p>
+
+<pre><code>locationManager = [[CLLocationManager alloc] init];
+locationManager.delegate = self;
+[locationManager startUpdatingLocation];
+</code></pre>
+
+<p>}else {</p>
+
+<pre><code>//提示用户无法进行定位操作
+</code></pre>
+
+<p>}`</p>
+
+<hr />
+
+<p>// 如果在iOS8下用这样的方式，你会发现无法定位，那是因为iOS8下添加了新的方法</p>
+
+<p> 表示使用应用程序期间  开启定位<br/>
+<code>- (void)requestWhenInUseAuthorization </code></p>
+
+<p>//表示始终 开启定位<br/>
+<code>- (void)requestAlwaysAuthorization</code></p>
+
+<p>两者区别在于，iOS7 开始，有更强大的后台运行功能，如果用 <code>requestAlwaysAuthorization</code> 方法，则表示后台运行时也会用到定位
+iOS8 下使用系统定位如下：</p>
+
+<hr />
+
+<p>// 判断定位操作是否被允许 <br/>
+`if ([CLLocationManager locationServicesEnabled])
+{</p>
+
+<pre><code> self.locationManager = [[CLLocationManager alloc] init];
+ _locationManager.delegate = self;
+ IOS8_OR_LATER ? [self startTrackingLocation]: [_locationManager startUpdatingLocation];
+ self.failToUpdateLocation = NO;
+</code></pre>
+
+<p>} else {</p>
+
+<pre><code> self.failToUpdateLocation = YES;
+</code></pre>
+
+<p>}`</p>
+
+<p>// iOS8 跟踪定位</p>
+
+<p>`&ndash; (void)startTrackingLocation
+{</p>
+
+<pre><code> CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+ if (status == kCLAuthorizationStatusNotDetermined) {
+      if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+      [self.locationManager requestWhenInUseAuthorization];
+      }
+ }
+ else if (status == kCLAuthorizationStatusAuthorizedWhenInUse || status == kCLAuthorizationStatusAuthorizedAlways)
+ {
+      [_locationManager startUpdatingLocation];
+ }
+</code></pre>
+
+<p>}`</p>
+
+<p>同时还需要添加新的方法，其他的都一样</p>
+
+<p>`&ndash; (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{      switch (status) {</p>
+
+<pre><code>    case kCLAuthorizationStatusAuthorizedAlways:
+    [_locationManager startUpdatingLocation];
+    break;
+case kCLAuthorizationStatusAuthorizedWhenInUse:
+    [self startTrackingLocation];
+break;
+case kCLAuthorizationStatusNotDetermined:
+    if ([self.locationManager       respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+    [self.locationManager requestWhenInUseAuthorization];
+    }
+    break;
+default:
+    break;
+</code></pre>
+
+<p>}}
+`</p>
+
+<hr />
+
+<p>除了这些，你还需要在 info.plist 里面添加新的键值，否则 也是无法定位的
+//表示使用应用程序期间  开启定位  &ndash; (void)requestWhenInUseAuthorization</p>
+
+<p>对应 NSLocationWhenInUseUsageDescription String @“测试测试测试” //表示始终 开启定位  &ndash; (void)requestAlwaysAuthorization</p>
+
+<p> 对应 NSLocationAlwaysUsageDescription String @“测试测试测试”</p>
+
+<p>NSLocationWhenInUseUsageDescription(或者NSLocationAlwaysUsageDescription) 对应的文字会在第一次请求用户同意定位的时候出现，还有 设置 > 隐私 > 定位 > your app 里面也会看到，比如下面就是开启app时出现的</p>
+
+<p><code>（注意：info.plist这两个值的类型必须是string，若为bool值，设置-隐私-定位查看app时，设置会crash。）</code></p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
@@ -595,53 +734,6 @@ fatherView *xx = childView.superView;
 
 		
 		
-	</div>
-
-</article>
-
-
-    <article class="post" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-	<div class="meta">
-		<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-26T15:12:24+08:00" data-updated="true" itemprop="datePublished">Mar 26<span>th</span>, 2014</time></div>
-		<div class="tags">
-
-
-	<a class='category' href='/blog/categories/ios/'>iOS</a>
-
-
-</div>
-		
-
-		
-	</div>
-	<h1 class="title" itemprop="name"><a href="/blog/2014/03/26/ios7zhi-tableviewgua-pei/" itemprop="url">iOS7之TableView适配</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>iOS7下的app都是全屏的，意思就是所有控制器的view默认都是从屏幕的（0，0）开始。</p>
-
-<p>为了达到全屏效果的app，官方为UIviewController增加了几个属性：</p>
-
-<pre><code>@property(nonatomic,assign) UIRectEdge edgesForExtendedLayout NS_AVAILABLE_IOS(7_0); // Defaults to UIRectEdgeAll
-
-@property(nonatomic,assign) BOOL extendedLayoutIncludesOpaqueBars NS_AVAILABLE_IOS(7_0); // Defaults to NO, but bars are translucent by default on 7_0.  
-
-@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets NS_AVAILABLE_IOS(7_0); // Defaults to YES
-</code></pre>
-
-
-		
-		<a href="/blog/2014/03/26/ios7zhi-tableviewgua-pei/" class="more-link">Read on &rarr;</a>
 	</div>
 
 </article>
